@@ -4,11 +4,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.mynotesapp.data.Note
+import com.example.mynotesapp.data.NoteDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class NotesViewModel(private val noteDao: NoteDao) :
-    ViewModel() {
+class NotesViewModel(
+    private val noteDao: NoteDao
+) : ViewModel() {
 
     private val _notes = MutableLiveData<List<Note>>()
     val notes: LiveData<List<Note>> get() = _notes
@@ -19,7 +22,7 @@ class NotesViewModel(private val noteDao: NoteDao) :
 
     private fun loadNotes() {
         viewModelScope.launch(Dispatchers.IO) {
-            _notes.postValue(noteDao.getAllNotes())
+            _notes.postValue(noteDao.getNotes())
         }
     }
 

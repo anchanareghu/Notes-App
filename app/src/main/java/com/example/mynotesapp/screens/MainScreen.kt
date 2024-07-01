@@ -1,7 +1,7 @@
 package com.example.mynotesapp.screens
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -20,30 +20,38 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.example.mynotesapp.Note
+import com.example.mynotesapp.data.Note
 import com.example.mynotesapp.NotesViewModel
+import com.example.mynotesapp.data.FakeNoteDao
 import com.example.mynotesapp.screens.appbars.DeletionConfirmationDialog
 import com.example.mynotesapp.screens.appbars.SearchBar
 
 @Composable
-fun MainScreen(navController: NavHostController, notesViewModel: NotesViewModel) {
+fun MainScreen(
+    navController: NavHostController,
+    notesViewModel: NotesViewModel = viewModel()
+) {
     var searchQuery by remember { mutableStateOf(TextFieldValue("")) }
     val notes by notesViewModel.notes.observeAsState(initial = emptyList())
-
 
     var showDialog by remember { mutableStateOf(false) }
     var noteToDelete by remember { mutableStateOf<Note?>(null) }
 
     Scaffold(
-        content = {
-            Column(modifier = Modifier.padding(it)) {
-                SearchBar(searchQuery) { textFieldValue ->
-                    searchQuery = textFieldValue
-                    notesViewModel.searchNotes(textFieldValue.text)
-                }
-                Spacer(modifier = Modifier.padding(8.dp))
+        topBar = {
+            SearchBar(searchQuery) { textFieldValue ->
+                searchQuery = textFieldValue
+                notesViewModel.searchNotes(textFieldValue.text)
+            }
+        },
+        content = { paddingValues ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+            ) {
                 NotesGrid(notes) { note, longClick ->
                     if (longClick) {
                         noteToDelete = note
@@ -53,32 +61,29 @@ fun MainScreen(navController: NavHostController, notesViewModel: NotesViewModel)
                     }
                 }
             }
+            if (showDialog) {
+                noteToDelete?.let { note ->
+                    DeletionConfirmationDialog(
+                        onDeleteConfirmed = {
+                            notesViewModel.delete(note)
+                            showDialog = false
+                        },
+                        onDismiss = { showDialog = false }
+                    )
+                }
+            }
         },
         floatingActionButton = {
             FloatingActionButton(
-                modifier = Modifier.padding(16.dp),
                 onClick = { navController.navigate("new_note") },
                 containerColor = BottomAppBarDefaults.bottomAppBarFabColor,
                 elevation = FloatingActionButtonDefaults.bottomAppBarFabElevation()
             ) {
-                Icon(Icons.Filled.Add, "Add Note")
+                Icon(Icons.Filled.Add, contentDescription = "Add Note")
             }
         }
     )
-
-    if (showDialog) {
-        noteToDelete?.let { note ->
-            DeletionConfirmationDialog(
-                onDeleteConfirmed = {
-                    notesViewModel.delete(note)
-                    showDialog = false
-                },
-                onDismiss = { showDialog = false }
-            )
-        }
-    }
 }
-
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable

@@ -1,4 +1,4 @@
-package com.example.mynotesapp
+package com.example.mynotesapp.data
 
 import android.content.Context
 import androidx.room.Database
@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 
-@Database(entities = [Note::class], version = 2)
+@Database(entities = [Note::class], version = 5)
 abstract class NotesDatabase : RoomDatabase() {
     abstract fun noteDao(): NoteDao
 
@@ -21,7 +21,7 @@ abstract class NotesDatabase : RoomDatabase() {
                     NotesDatabase::class.java,
                     "note_database"
                 )
-                    .fallbackToDestructiveMigration()  // to avoid migration issues
+                    .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
                 instance
@@ -29,3 +29,4 @@ abstract class NotesDatabase : RoomDatabase() {
         }
     }
 }
+

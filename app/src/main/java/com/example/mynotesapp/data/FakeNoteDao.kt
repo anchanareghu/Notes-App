@@ -1,27 +1,24 @@
-package com.example.mynotesapp.screens
-
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
-import com.example.mynotesapp.Note
-import com.example.mynotesapp.NoteDao
+package com.example.mynotesapp.data
 
 
 class FakeNoteDao : NoteDao {
-    override fun getAllNotes(): List<Note> {
+    override fun getNotes(): List<Note> {
         return listOf(
             Note(
                 id = 1,
                 title = "Sample Note 1",
+                imageUri = "https://example.com/image1.jpg",
                 content = "This is a sample note content for preview.",
-                color = Color.Red.toArgb(),
-                isFavorite = false
+                isFavorite = false,
+                date = System.currentTimeMillis()
             ),
             Note(
                 id = 2,
                 title = "Sample Note 2",
+                imageUri = "https://example.com/image2.jpg",
                 content = "Another sample note content for preview.",
-                color = Color.Green.toArgb(),
-                isFavorite = false
+                isFavorite = false,
+                date = System.currentTimeMillis()
             )
         )
     }

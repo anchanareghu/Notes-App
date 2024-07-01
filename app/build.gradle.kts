@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    id ("kotlin-kapt")
+    id("kotlin-kapt")
 }
 
 android {
@@ -64,13 +64,18 @@ dependencies {
     //room library
     implementation(libs.androidx.room.runtime)
     annotationProcessor(libs.androidx.room.compiler)
-    kapt ("androidx.room:room-compiler:2.6.1")
-
     implementation(libs.androidx.room.ktx)
+    kapt("androidx.room:room-compiler:2.6.1")
 
-    implementation (libs.androidx.runtime.livedata)
+    //coil
+    implementation(libs.coil.compose)
+
+    //test
+    testImplementation ("org.mockito:mockito-core:4.0.0")
+    testImplementation ("androidx.arch.core:core-testing:2.1.0")
+
+    implementation(libs.androidx.runtime.livedata)
     implementation(libs.androidx.navigation.compose)
-
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

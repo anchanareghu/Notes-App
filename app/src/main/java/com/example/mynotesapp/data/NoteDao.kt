@@ -1,4 +1,4 @@
-package com.example.mynotesapp
+package com.example.mynotesapp.data
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -10,7 +10,7 @@ import androidx.room.Update
 @Dao
 interface NoteDao {
     @Query("SELECT * FROM notes")
-    fun getAllNotes(): List<Note>
+    fun getNotes(): List<Note>
 
     @Query("SELECT * FROM notes WHERE title LIKE :query OR content LIKE :query")
     fun searchNotes(query: String): List<Note>
