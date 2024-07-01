@@ -48,5 +48,3 @@ This project follows the MVVM (Model-View-ViewModel) architecture pattern to mai
 - [Kotlin Documentation](https://kotlinlang.org/docs/home.html)
 
 ---
-
-*This README was generated with ❤️ by [Anchana Reghu](https://github.com/anchanareghu).*
