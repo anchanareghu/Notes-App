@@ -1,6 +1,6 @@
 # Notes App
 
-Welcome to the Notes App, an Android application built with Kotlin, Jetpack Compose, and Room Database. This app allows users to create, edit, and delete notes efficiently.
+An Android Notes application built with Kotlin, Jetpack Compose, and Room Database. This app allows users to create, edit, and delete notes efficiently.
 
 ## Features
 
