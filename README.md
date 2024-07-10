@@ -1,4 +1,5 @@
 # Notes App
+![Purple App Phone Mockup Sales Marketing Presentation](https://github.com/anchanareghu/Notes-App/assets/143755659/bf50aae9-3815-4f8d-9e7e-f5ad7eda9797)
 
 An Android Notes application built with Kotlin, Jetpack Compose, and Room Database. This app allows users to create, edit, and delete notes efficiently.
 
@@ -11,7 +12,6 @@ An Android Notes application built with Kotlin, Jetpack Compose, and Room Databa
 
 ## Screenshots
 
-<img src="app/src/main/res/drawable/screenshot_01.png" width="200" /> <img src="app/src/main/res/drawable/screenshot_02.png" width="200" /> <img src="app/src/main/res/drawable/screenshot_03.png" width="200" /> <img src="app/src/main/res/drawable/screenshot_04.png" width="200" />
 
 ## Architecture
 
