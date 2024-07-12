@@ -1,4 +1,4 @@
-package com.example.mynotesapp.screens
+package com.example.mynotesapp.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,11 +22,11 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import com.example.mynotesapp.components.appbars.DeletionConfirmationDialog
+import com.example.mynotesapp.components.appbars.SearchBar
 import com.example.mynotesapp.data.Note
-import com.example.mynotesapp.NotesViewModel
 import com.example.mynotesapp.data.FakeNoteDao
-import com.example.mynotesapp.screens.appbars.DeletionConfirmationDialog
-import com.example.mynotesapp.screens.appbars.SearchBar
+import com.example.mynotesapp.viewmodel.NotesViewModel
 
 @Composable
 fun MainScreen(

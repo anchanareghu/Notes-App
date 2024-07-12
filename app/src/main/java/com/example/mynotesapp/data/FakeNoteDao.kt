@@ -10,6 +10,9 @@ class FakeNoteDao : NoteDao {
                 imageUri = "https://example.com/image1.jpg",
                 content = "This is a sample note content for preview.",
                 isFavorite = false,
+                isItalic = false,
+                isBold = false,
+                isUnderlined = false,
                 date = System.currentTimeMillis()
             ),
             Note(
@@ -18,6 +21,9 @@ class FakeNoteDao : NoteDao {
                 imageUri = "https://example.com/image2.jpg",
                 content = "Another sample note content for preview.",
                 isFavorite = false,
+                isItalic = false,
+                isBold = false,
+                isUnderlined = false,
                 date = System.currentTimeMillis()
             )
         )

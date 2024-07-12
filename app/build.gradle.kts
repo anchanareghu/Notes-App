@@ -71,11 +71,12 @@ dependencies {
     implementation(libs.coil.compose)
 
     //test
-    testImplementation ("org.mockito:mockito-core:4.0.0")
-    testImplementation ("androidx.arch.core:core-testing:2.1.0")
+    testImplementation("org.mockito:mockito-core:4.0.0")
+    testImplementation("androidx.arch.core:core-testing:2.1.0")
 
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.androidx.navigation.compose)
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -1,4 +1,4 @@
-package com.example.mynotesapp.screens.appbars
+package com.example.mynotesapp.components.appbars
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth

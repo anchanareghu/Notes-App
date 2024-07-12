@@ -4,8 +4,9 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.example.mynotesapp.data.NotesDatabase
-import com.example.mynotesapp.screens.appbars.NotesAppNavHost
+import com.example.mynotesapp.components.appbars.NotesAppNavHost
 import com.example.mynotesapp.ui.theme.MyNotesAppTheme
+import com.example.mynotesapp.viewmodel.NotesViewModel
 
 class MainActivity : ComponentActivity() {
     private lateinit var notesDatabase: NotesDatabase
@@ -25,4 +26,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-

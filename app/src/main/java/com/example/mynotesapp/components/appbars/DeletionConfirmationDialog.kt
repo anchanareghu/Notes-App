@@ -1,4 +1,4 @@
-package com.example.mynotesapp.screens.appbars
+package com.example.mynotesapp.components.appbars
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Text

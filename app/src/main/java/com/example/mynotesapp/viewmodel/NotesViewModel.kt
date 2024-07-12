@@ -1,4 +1,4 @@
-package com.example.mynotesapp
+package com.example.mynotesapp.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -54,7 +54,3 @@ class NotesViewModel(
         }
     }
 }
-
-
-
-

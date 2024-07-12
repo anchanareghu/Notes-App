@@ -1,4 +1,4 @@
-package com.example.mynotesapp.screens
+package com.example.mynotesapp.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -147,6 +147,9 @@ fun NoteCardPreview() {
         title = "Title",
         content = "Content",
         isFavorite = false,
+        isUnderlined = false,
+        isItalic = false,
+        isBold = false,
         date = System.currentTimeMillis(),
         imageUri = "https://picsum.photos/200/300"
     )
@@ -164,6 +167,9 @@ fun NotesGridPreview() {
                 imageUri = "https://picsum.photos/200/300",
                 content = "Content",
                 isFavorite = false,
+                isUnderlined = false,
+                isItalic = false,
+                isBold = false,
                 date = System.currentTimeMillis()
             ),
             Note(
@@ -172,6 +178,9 @@ fun NotesGridPreview() {
                 imageUri = "",
                 content = "Some more content",
                 isFavorite = true,
+                isUnderlined = true,
+                isItalic = true,
+                isBold = true,
                 date = System.currentTimeMillis()
             ),
             Note(
@@ -182,8 +191,10 @@ fun NotesGridPreview() {
                         "but the majority have suffered alteration in some form, by injected humour," +
                         " or randomised words which don't look even slightly believable.",
                 isFavorite = true,
+                isUnderlined = true,
+                isItalic = true,
+                isBold = true,
                 date = System.currentTimeMillis()
-
             ),
             Note(
                 id = 4,
@@ -192,6 +203,9 @@ fun NotesGridPreview() {
                 content = "the majority have suffered alteration in some form, by injected humour," +
                         " or randomised words which don't look even slightly believable.",
                 isFavorite = true,
+                isUnderlined = true,
+                isItalic = true,
+                isBold = true,
                 date = System.currentTimeMillis()
             )
         )

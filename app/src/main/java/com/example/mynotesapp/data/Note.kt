@@ -10,6 +10,9 @@ data class Note(
     val imageUri: String,
     val content: String,
     val isFavorite: Boolean,
+    val isItalic: Boolean,
+    val isBold: Boolean,
+    val isUnderlined: Boolean,
     val date: Long,
 )
 

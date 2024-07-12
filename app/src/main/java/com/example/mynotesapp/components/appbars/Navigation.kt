@@ -1,13 +1,12 @@
-package com.example.mynotesapp.screens.appbars
+package com.example.mynotesapp.components.appbars
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.mynotesapp.NotesViewModel
-import com.example.mynotesapp.screens.MainScreen
-import com.example.mynotesapp.screens.NotesEditorScreen
+import com.example.mynotesapp.viewmodel.NotesViewModel
+import com.example.mynotesapp.components.MainScreen
+import com.example.mynotesapp.components.NotesEditorScreen
 
 @Composable
 fun NotesAppNavHost(notesViewModel: NotesViewModel) {

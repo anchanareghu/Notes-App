@@ -1,4 +1,4 @@
-package com.example.mynotesapp.screens
+package com.example.mynotesapp.components
 
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -49,12 +49,10 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
@@ -63,14 +61,15 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.mynotesapp.data.Note
-import com.example.mynotesapp.NotesViewModel
 import com.example.mynotesapp.R
 import com.example.mynotesapp.data.FakeNoteDao
+import com.example.mynotesapp.data.Note
+import com.example.mynotesapp.viewmodel.NotesViewModel
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NotesEditorScreen(
@@ -79,25 +78,31 @@ fun NotesEditorScreen(
     noteId: Int? = null
 ) {
     val context = LocalContext.current
-    val note = noteId?.let { notesViewModel.notes.value?.find { it.id == noteId } }
-    var title by rememberSaveable { mutableStateOf(note?.title ?: "") }
-    var content by rememberSaveable { mutableStateOf(note?.content ?: "") }
-    var isFavorite by rememberSaveable { mutableStateOf(note?.isFavorite ?: false) }
-    var imageUri by rememberSaveable { mutableStateOf(note?.imageUri ?: "") }
-    val creationDate = note?.date ?: System.currentTimeMillis()
-    val formattedDate = SimpleDateFormat("dd MMMM yyyy", Locale.getDefault()).format(Date(creationDate))
     val scope = rememberCoroutineScope()
     val snackBarHostState = remember { SnackbarHostState() }
 
-    var isBold by rememberSaveable { mutableStateOf(false) }
-    var isItalic by rememberSaveable { mutableStateOf(false) }
-    var isUnderlined by rememberSaveable { mutableStateOf(false) }
+    val note = noteId?.let { notesViewModel.notes.value?.find { it.id == noteId } }
+
+    var title by rememberSaveable { mutableStateOf(note?.title ?: "") }
+    var content by rememberSaveable { mutableStateOf(note?.content ?: "") }
+    var imageUri by rememberSaveable { mutableStateOf(note?.imageUri ?: "") }
+    var isFavorite by rememberSaveable { mutableStateOf(note?.isFavorite ?: false) }
+    var isBold by rememberSaveable { mutableStateOf(note?.isBold ?: false) }
+    var isItalic by rememberSaveable { mutableStateOf(note?.isItalic ?: false) }
+    var isUnderlined by rememberSaveable { mutableStateOf(note?.isUnderlined ?: false) }
+
+    val creationDate = note?.date ?: System.currentTimeMillis()
+    val formattedDate =
+        SimpleDateFormat("dd MMMM yyyy", Locale.getDefault()).format(Date(creationDate))
 
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
         uri?.let {
-            context.contentResolver.takePersistableUriPermission(it, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            context.contentResolver.takePersistableUriPermission(
+                it,
+                Intent.FLAG_GRANT_READ_URI_PERMISSION
+            )
             imageUri = it.toString()
         }
     }
@@ -140,6 +145,9 @@ fun NotesEditorScreen(
                             title = title,
                             content = content,
                             isFavorite = isFavorite,
+                            isItalic = isItalic,
+                            isBold = isBold,
+                            isUnderlined = isUnderlined,
                             date = creationDate,
                             imageUri = imageUri
                         )
