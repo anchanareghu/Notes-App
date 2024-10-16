@@ -1,22 +1,23 @@
-package com.example.mynotesapp
+package com.example.mynotesapp.auth
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.example.mynotesapp.auth.AuthActivity
-import com.example.mynotesapp.components.appbars.NotesAppNavHost
+import androidx.navigation.compose.rememberNavController
+import com.example.mynotesapp.MainActivity
 import com.example.mynotesapp.ui.theme.MyNotesAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class AuthActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent {
+            val navController = rememberNavController()
             MyNotesAppTheme {
-                NotesAppNavHost()
+                AuthNavHost(navController = navController)
             }
         }
     }

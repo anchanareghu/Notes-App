@@ -1,29 +1,51 @@
 package com.example.mynotesapp.components.appbars
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.mynotesapp.viewmodel.NotesViewModel
-import com.example.mynotesapp.components.MainScreen
-import com.example.mynotesapp.components.NotesEditorScreen
+import com.example.mynotesapp.auth.AuthViewModel
+import com.example.mynotesapp.components.home.MainScreen
+import com.example.mynotesapp.components.notes.NewNoteScreen
+import com.example.mynotesapp.components.notes.NotesEditorScreen
+import com.example.mynotesapp.components.home.ProfileScreen
+import com.example.mynotesapp.components.tasks.NewTaskScreen
+import com.example.mynotesapp.components.tasks.TaskEditorScreen
 
 @Composable
-fun NotesAppNavHost(notesViewModel: NotesViewModel) {
+fun NotesAppNavHost() {
     val navController = rememberNavController()
-    NavHost( navController = navController, startDestination = "main_screen") {
+    val authViewModel: AuthViewModel = hiltViewModel()
+
+    LaunchedEffect(authViewModel.isLoggedIn) {
+        if (authViewModel.isLoggedIn) {
+            navController.navigate("main_screen")
+        }
+    }
+
+    NavHost(
+        navController = navController,
+        startDestination = "main_screen"
+    ) {
         composable("main_screen") {
-            MainScreen(navController, notesViewModel)
+            MainScreen(navController)
         }
         composable("new_note") {
-            NotesEditorScreen(navController, notesViewModel)
+            NewNoteScreen(navController)
         }
-        composable("note_detail/{noteId}") { backStackEntry ->
-            val noteId = backStackEntry.arguments?.getString("noteId")?.toInt() ?: -1
-            NotesEditorScreen(navController, notesViewModel, noteId)
+        composable("edit_note/{noteId}") {
+            NotesEditorScreen(navController)
+        }
+        composable("profile") {
+            ProfileScreen()
+        }
+        composable("new_task"){
+            NewTaskScreen(navController)
+        }
+        composable("edit_task/{taskId}"){
+            TaskEditorScreen(navController)
         }
     }
 }
-
-
-

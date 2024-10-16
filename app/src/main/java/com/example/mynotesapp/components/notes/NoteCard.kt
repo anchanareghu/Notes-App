@@ -1,20 +1,17 @@
-package com.example.mynotesapp.components
+package com.example.mynotesapp.components.notes
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
-import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -42,30 +39,14 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-@Composable
-fun NotesGrid(notes: List<Note>, onNoteClick: (Note, Boolean) -> Unit) {
-    LazyVerticalStaggeredGrid(
-        columns = StaggeredGridCells.Fixed(2),
-        verticalItemSpacing = 4.dp,
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
-        content = {
-            items(notes) { note ->
-                NoteCard(
-                    note = note,
-                    onClick = { onNoteClick(note, false) },
-                    onLongClick = { onNoteClick(note, true) }
-                )
-            }
-        },
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(4.dp)
-    )
-}
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun NoteCard(note: Note, onClick: () -> Unit, onLongClick: () -> Unit) {
+fun NoteCard(
+    note: Note,
+    onClick: () -> Unit,
+    onLongClick: () -> Unit
+) {
     val creationDate = note.date
     val formattedDate =
         SimpleDateFormat("dd MMM", Locale.getDefault()).format(Date(creationDate))
@@ -74,7 +55,11 @@ fun NoteCard(note: Note, onClick: () -> Unit, onLongClick: () -> Unit) {
             .heightIn(min = 100.dp, max = 300.dp)
             .padding(4.dp)
             .combinedClickable(onClick = onClick, onLongClick = onLongClick),
-        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.secondaryContainer)
+        colors = CardDefaults.cardColors(
+            containerColor = if (isSystemInDarkTheme()) Color.White.copy(alpha = 0.2f) else Color.DarkGray.copy(
+                alpha = 0.2f
+            )
+        )
     ) {
         Column(modifier = Modifier.padding(8.dp)) {
             Row(
@@ -100,10 +85,10 @@ fun NoteCard(note: Note, onClick: () -> Unit, onLongClick: () -> Unit) {
                     )
                 }
             }
-            if (note.imageUri.isNotEmpty()) {
+            if (note.imageUris.isNotEmpty()) {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(note.imageUri)
+                        .data(note.imageUris[0])
                         .crossfade(true)
                         .build(),
                     contentDescription = null,
@@ -139,75 +124,17 @@ fun NoteCard(note: Note, onClick: () -> Unit, onLongClick: () -> Unit) {
     }
 }
 
+
 @Preview(showBackground = true)
 @Composable
 fun NoteCardPreview() {
     val note = Note(
-        id = 1,
+        id = "1",
         title = "Title",
         content = "Content",
         isFavorite = false,
-        isUnderlined = false,
-        isItalic = false,
-        isBold = false,
         date = System.currentTimeMillis(),
-        imageUri = "https://picsum.photos/200/300"
+        imageUris = listOf("https://picsum.photos/200/300")
     )
     NoteCard(note, onClick = {}, onLongClick = {})
-}
-
-@Preview(showBackground = true)
-@Composable
-fun NotesGridPreview() {
-    NotesGrid(
-        notes = listOf(
-            Note(
-                id = 1,
-                title = "Title",
-                imageUri = "https://picsum.photos/200/300",
-                content = "Content",
-                isFavorite = false,
-                isUnderlined = false,
-                isItalic = false,
-                isBold = false,
-                date = System.currentTimeMillis()
-            ),
-            Note(
-                id = 2,
-                title = "Another Title",
-                imageUri = "",
-                content = "Some more content",
-                isFavorite = true,
-                isUnderlined = true,
-                isItalic = true,
-                isBold = true,
-                date = System.currentTimeMillis()
-            ),
-            Note(
-                id = 3,
-                title = "Lorem Ipsum",
-                imageUri = "",
-                content = "There are many variations of passages of Lorem Ipsum available, " +
-                        "but the majority have suffered alteration in some form, by injected humour," +
-                        " or randomised words which don't look even slightly believable.",
-                isFavorite = true,
-                isUnderlined = true,
-                isItalic = true,
-                isBold = true,
-                date = System.currentTimeMillis()
-            ),
-            Note(
-                id = 4,
-                title = "Lorem Ipsum",
-                imageUri = "",
-                content = "the majority have suffered alteration in some form, by injected humour," +
-                        " or randomised words which don't look even slightly believable.",
-                isFavorite = true,
-                isUnderlined = true,
-                isItalic = true,
-                isBold = true,
-                date = System.currentTimeMillis()
-            )
-        )
-    ) { _, _ -> }
 }

@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("kotlin-kapt")
+    id("com.google.gms.google-services")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -71,12 +73,30 @@ dependencies {
     implementation(libs.coil.compose)
 
     //test
-    testImplementation("org.mockito:mockito-core:4.0.0")
-    testImplementation("androidx.arch.core:core-testing:2.1.0")
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.androidx.core.testing)
 
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.androidx.navigation.compose)
 
+    //firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
+    implementation(libs.play.services.auth)
+    implementation(libs.firebase.firestore)
+
+    //credential
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
+
+    //hilt
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+    implementation ("androidx.compose.runtime:runtime-livedata:1.5.4")
+
+    kapt(libs.androidx.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
