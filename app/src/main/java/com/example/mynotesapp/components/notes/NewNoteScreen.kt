@@ -1,10 +1,7 @@
 package com.example.mynotesapp.components.notes
 
-import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -44,10 +41,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.example.mynotesapp.components.appbars.CustomBottomAppBar
+import com.example.mynotesapp.NotesViewModel
+import com.example.mynotesapp.components.appbars.NotesBottomAppBar
 import com.example.mynotesapp.components.imagePickerLauncher
 import com.example.mynotesapp.data.Note
-import com.example.mynotesapp.firestore.FireStoreNotesViewModel
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -57,13 +54,13 @@ import java.util.Locale
 @Composable
 fun NewNoteScreen(
     navController: NavHostController,
-    notesViewModel: FireStoreNotesViewModel = hiltViewModel()
 ) {
+    val notesViewModel: NotesViewModel = hiltViewModel()
+
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val snackBarHostState = remember { SnackbarHostState() }
 
-    // State for note fields
     var title by rememberSaveable { mutableStateOf("") }
     var content by rememberSaveable { mutableStateOf("") }
     var isFavorite by rememberSaveable { mutableStateOf(false) }
@@ -98,7 +95,7 @@ fun NewNoteScreen(
             )
         },
         bottomBar = {
-            CustomBottomAppBar(
+            NotesBottomAppBar(
                 onImageClick = { launcher.launch("image/*") },
                 onBoldClick = { },
                 onItalicClick = { },
@@ -110,7 +107,7 @@ fun NewNoteScreen(
                         isFavorite = isFavorite,
                         imageUris = imageUris
                     )
-                    notesViewModel.insertNote(newNote)
+                    notesViewModel.insert(newNote)
                     navController.popBackStack()
                 }
             )

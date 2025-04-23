@@ -41,11 +41,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.example.mynotesapp.components.appbars.CustomBottomAppBar
+import com.example.mynotesapp.NotesViewModel
+import com.example.mynotesapp.components.appbars.NotesBottomAppBar
 import com.example.mynotesapp.components.imagePickerLauncher
 import com.example.mynotesapp.data.Task
 import com.example.mynotesapp.data.TaskEntry
-import com.example.mynotesapp.firestore.FireStoreNotesViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,17 +53,18 @@ import kotlinx.coroutines.launch
 fun NewTaskScreen(
     navController: NavHostController
 ) {
-    val viewModel: FireStoreNotesViewModel = hiltViewModel()
-
-    var title by rememberSaveable { mutableStateOf("") }
-    var isCompleted by rememberSaveable { mutableStateOf(false) }
-    var isFavorite by rememberSaveable { mutableStateOf(false) }
-
-    val tasks = remember { mutableStateListOf(TaskEntry()) }
+    val viewModel: NotesViewModel = hiltViewModel()
 
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val snackBarHostState = remember { SnackbarHostState() }
+
+    var title by rememberSaveable { mutableStateOf("") }
+    val tasks = remember { mutableStateListOf(TaskEntry()) }
+    val isCompleted by rememberSaveable { mutableStateOf(false) }
+    var isFavorite by rememberSaveable { mutableStateOf(false) }
+
+
 
     val imageUris by rememberSaveable { mutableStateOf(mutableListOf<String>()) }
 
@@ -94,16 +95,16 @@ fun NewTaskScreen(
             )
         },
         bottomBar = {
-            CustomBottomAppBar(
+            NotesBottomAppBar(
                 onAddClick = {
                     val newTask = Task(
                         title = title,
                         taskEntries = tasks,
-                        isCompleted = isCompleted,
+                        isChecked = isCompleted,
                         isFavorite = isFavorite,
                         imageUris = imageUris
                     )
-                    viewModel.insertTask(newTask)
+                    viewModel.insert(newTask)
                     navController.popBackStack()
                 },
                 onImageClick = {

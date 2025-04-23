@@ -1,8 +1,11 @@
 package com.example.mynotesapp.di
 
 import android.content.Context
-import com.example.mynotesapp.auth.AuthenticationManager
-import com.example.mynotesapp.firestore.FireStoreRepo
+import androidx.room.Room
+import com.example.mynotesapp.data.NoteDao
+import com.example.mynotesapp.data.NotesDatabase
+import com.example.mynotesapp.data.TaskDao
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides
@@ -21,14 +24,32 @@ object DatabaseModule {
         return FirebaseFirestore.getInstance()
     }
 
-    @Provides
+
     @Singleton
-    fun provideFirestoreRepository(firestore: FirebaseFirestore): FireStoreRepo {
-        return FireStoreRepo(firestore)
+    @Provides
+    fun provideAppDatabase(@ApplicationContext context: Context): NotesDatabase {
+        return Room.databaseBuilder(
+            context,
+            NotesDatabase::class.java,
+            "note_database"
+        ).build()
     }
+
+    @Provides
+    fun provideNoteDao(database: NotesDatabase): NoteDao {
+        return database.noteDao()
+    }
+
+    @Provides
+    fun provideTaskDao(database: NotesDatabase): TaskDao {
+        return database.taskDao()
+    }
+
     @Provides
     @Singleton
-    fun provideAuthenticationManager(@ApplicationContext context: Context): AuthenticationManager {
-        return AuthenticationManager(context)
+    fun provideAuthService(
+        @ApplicationContext context: Context,
+    ): FirebaseAuth {
+        return FirebaseAuth.getInstance()
     }
 }

@@ -1,35 +1,25 @@
 package com.example.mynotesapp.components.notes
 
-import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
-import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -50,9 +40,7 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -60,10 +48,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.mynotesapp.R
-import com.example.mynotesapp.components.appbars.CustomBottomAppBar
+import com.example.mynotesapp.NotesViewModel
+import com.example.mynotesapp.components.appbars.NotesBottomAppBar
 import com.example.mynotesapp.components.imagePickerLauncher
-import com.example.mynotesapp.firestore.FireStoreNotesViewModel
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -74,12 +61,12 @@ import java.util.Locale
 fun NotesEditorScreen(
     navController: NavHostController,
 ) {
-    val notesViewModel: FireStoreNotesViewModel = hiltViewModel()
+    val notesViewModel: NotesViewModel = hiltViewModel()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val snackBarHostState = remember { SnackbarHostState() }
     val noteId = navController.currentBackStackEntry?.arguments?.getString("noteId")
-    val note = notesViewModel.notesState.find { it.id == noteId }
+    val note = notesViewModel.notes.value?.find { it.id == noteId?.toInt() }
 
     note?.let {
         var title by rememberSaveable { mutableStateOf(note.title) }
@@ -103,7 +90,7 @@ fun NotesEditorScreen(
                     actions = {
                         IconButton(onClick = {
                             isFavorite = !isFavorite
-                            notesViewModel.addOrUpdateNote(note.copy(isFavorite = isFavorite))
+                            notesViewModel.update(note.copy(isFavorite = isFavorite))
                         }) {
                             Icon(
                                 imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
@@ -115,7 +102,7 @@ fun NotesEditorScreen(
                 )
             },
             bottomBar = {
-                CustomBottomAppBar(
+                NotesBottomAppBar(
                     onImageClick = { launcher.launch("image/*") },
                     onBoldClick = { },
                     onItalicClick = { },
@@ -127,7 +114,7 @@ fun NotesEditorScreen(
                             isFavorite = isFavorite,
                             imageUris = imageUris
                         )
-                        notesViewModel.addOrUpdateNote(updatedNote)
+                        notesViewModel.insert(updatedNote)
                         navController.popBackStack()
                     }
                 )
@@ -174,7 +161,7 @@ fun NotesEditorScreen(
                                                 if (result == SnackbarResult.ActionPerformed) {
                                                     imageUris =
                                                         imageUris.filterIndexed { i, _ -> i != index }
-                                                    notesViewModel.addOrUpdateNote(
+                                                    notesViewModel.insert(
                                                         note.copy(
                                                             imageUris = imageUris
                                                         )
@@ -223,7 +210,7 @@ fun NoteTextField(
             .fillMaxWidth(),
         textStyle = TextStyle(
             fontSize = fontSize,
-            color = Color.Black
+            color = if (isSystemInDarkTheme()) Color.White else Color.Black
         ),
         decorationBox = { innerTextField ->
             if (text.isEmpty()) {

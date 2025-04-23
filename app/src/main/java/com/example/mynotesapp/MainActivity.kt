@@ -1,11 +1,9 @@
 package com.example.mynotesapp
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.example.mynotesapp.auth.AuthActivity
-import com.example.mynotesapp.components.appbars.NotesAppNavHost
+import androidx.navigation.compose.rememberNavController
 import com.example.mynotesapp.ui.theme.MyNotesAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -13,10 +11,10 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent {
+            val navController = rememberNavController()
             MyNotesAppTheme {
-                NotesAppNavHost()
+                AppNavHost(navController)
             }
         }
     }

@@ -129,7 +129,7 @@ fun NoteCard(
 @Composable
 fun NoteCardPreview() {
     val note = Note(
-        id = "1",
+        id = 1,
         title = "Title",
         content = "Content",
         isFavorite = false,

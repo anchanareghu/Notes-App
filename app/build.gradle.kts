@@ -65,12 +65,20 @@ dependencies {
 
     //room library
     implementation(libs.androidx.room.runtime)
+    implementation(libs.firebase.storage.ktx)
+    implementation(libs.core.ktx)
+    implementation(libs.androidx.junit.ktx)
     annotationProcessor(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
     kapt("androidx.room:room-compiler:2.6.1")
 
     //coil
     implementation(libs.coil.compose)
+
+    implementation ("com.google.code.gson:gson:2.8.8")
+
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 
     //test
     testImplementation(libs.mockito.core)
@@ -93,7 +101,7 @@ dependencies {
     //hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
-    implementation ("androidx.compose.runtime:runtime-livedata:1.5.4")
+    implementation (libs.androidx.runtime.livedata.v154)
 
     kapt(libs.androidx.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)

@@ -1,14 +1,15 @@
 package com.example.mynotesapp.data
 
-import com.google.firebase.firestore.DocumentId
-import com.google.firebase.firestore.PropertyName
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
+@Entity(tableName = "tasks")
 data class Task(
-    @DocumentId var id: String = "",
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val title: String = "",
     val taskEntries: List<TaskEntry> = listOf(),
-    @PropertyName("favorite") val isFavorite: Boolean = false,
-    @PropertyName("completed") var isCompleted: Boolean = false,
+    val isFavorite: Boolean = false,
+    var isChecked: Boolean = false,
     val date: Long = System.currentTimeMillis(),
     val imageUris: List<String> = listOf()
 )

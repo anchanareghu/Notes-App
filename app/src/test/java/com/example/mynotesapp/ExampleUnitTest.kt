@@ -1,17 +1,5 @@
 package com.example.mynotesapp
 
-import org.junit.Test
-
-import org.junit.Assert.*
-import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.Observer
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import org.junit.*
-import org.mockito.Mock
-import org.mockito.Mockito.*
-import org.mockito.MockitoAnnotations
-
 //
 //@ExperimentalCoroutinesApi
 //class NotesViewModelTest {

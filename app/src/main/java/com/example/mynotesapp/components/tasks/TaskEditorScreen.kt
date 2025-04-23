@@ -52,15 +52,16 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.example.mynotesapp.components.appbars.CustomBottomAppBar
+import com.example.mynotesapp.NotesViewModel
+import com.example.mynotesapp.components.appbars.NotesBottomAppBar
 import com.example.mynotesapp.components.imagePickerLauncher
 import com.example.mynotesapp.data.TaskEntry
-import com.example.mynotesapp.firestore.FireStoreNotesViewModel
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -71,10 +72,10 @@ import java.util.Locale
 fun TaskEditorScreen(
     navController: NavHostController,
 ) {
-    val notesViewModel: FireStoreNotesViewModel = hiltViewModel()
+    val notesViewModel: NotesViewModel = hiltViewModel()
 
     val taskId = navController.currentBackStackEntry?.arguments?.getString("taskId")
-    val task = notesViewModel.tasksState.find { it.id == taskId }
+    val task = notesViewModel.tasks.value?.find { it.id == taskId?.toInt() }
     val snackBarHostState = remember { SnackbarHostState() }
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -82,7 +83,7 @@ fun TaskEditorScreen(
     task?.let {
         var title by rememberSaveable { mutableStateOf(task.title) }
         var content by rememberSaveable { mutableStateOf(task.taskEntries) }
-        var isCompleted by rememberSaveable { mutableStateOf(task.isCompleted) }
+        var isChecked by rememberSaveable { mutableStateOf(task.isChecked) }
         var imageUris by rememberSaveable { mutableStateOf(task.imageUris) }
         var isFavorite by rememberSaveable { mutableStateOf(task.isFavorite) }
 
@@ -107,7 +108,7 @@ fun TaskEditorScreen(
                     actions = {
                         IconButton(onClick = {
                             isFavorite = !isFavorite
-                            notesViewModel.addOrUpdateTask(task.copy(isFavorite = isFavorite))
+                            notesViewModel.update(task.copy(isFavorite = isFavorite))
                         }) {
                             Icon(
                                 imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder,
@@ -120,17 +121,17 @@ fun TaskEditorScreen(
                 )
             },
             bottomBar = {
-                CustomBottomAppBar(
+                NotesBottomAppBar(
                     onAddClick = {
                         val updatedTask = task.copy(
                             title = title,
                             taskEntries = tasks.toList(), // Store the list of TaskEntry
-                            isCompleted = isCompleted,
+                            isChecked = isChecked,
                             isFavorite = isFavorite,
                             imageUris = imageUris
                         )
 
-                        notesViewModel.addOrUpdateTask(updatedTask)
+                        notesViewModel.update(updatedTask)
                         navController.popBackStack()
                     },
                     onBoldClick = { },
@@ -190,7 +191,7 @@ fun TaskEditorScreen(
                                             if (result == SnackbarResult.ActionPerformed) {
                                                 imageUris =
                                                     imageUris.filterIndexed { i, _ -> i != index }
-                                                notesViewModel.addOrUpdateTask(
+                                                notesViewModel.insert(
                                                     task.copy(imageUris = imageUris)
                                                 )
                                             }
@@ -263,9 +264,18 @@ fun TaskTextField(
             }
             innerTextField()
         },
-        keyboardActions = KeyboardActions(onDone = {
-            imeAction()
-        }),
+        keyboardActions = KeyboardActions(
+            onGo = {
+                imeAction()
+            },
+            onSend = {
+                imeAction()
+            },
+            onNext = {
+                imeAction()
+            }, onDone = {
+                imeAction()
+            }),
         cursorBrush = SolidColor(MaterialTheme.colorScheme.primary)
     )
 }
@@ -301,6 +311,7 @@ fun TaskEditor(
             modifier = Modifier.fillMaxWidth(),
             textStyle = TextStyle(
                 fontSize = 18.sp,
+                textDecoration = if (checked) TextDecoration.LineThrough else TextDecoration.None,
                 color = if (isSystemInDarkTheme()) Color.White else Color.Black
             ),
             decorationBox = { innerTextField ->

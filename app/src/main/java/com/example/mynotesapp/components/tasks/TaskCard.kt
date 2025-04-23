@@ -118,8 +118,8 @@ fun TaskCard(
                     items(task.taskEntries.size) {
                         TaskCheckBoxItem(
                             text = task.taskEntries[it].text,
-                            selected = task.taskEntries[it].isChecked,
-                            onSelected = {}
+                            checked = task.taskEntries[it].isChecked,
+                            onChecked = {}
                         )
                     }
                 }
@@ -133,12 +133,12 @@ fun TaskCard(
 fun TaskCardPreview() {
     TaskCard(
         task = Task(
-            id = "1",
+            id = 1,
             title = "task title",
             isFavorite = true,
             imageUris = listOf("https://picsum.photos/200/300"),
             date = System.currentTimeMillis(),
-            isCompleted = true,
+            isChecked = true,
             taskEntries = listOf(
                 TaskEntry(
                     text = "task entry 1",

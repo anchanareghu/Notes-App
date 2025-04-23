@@ -63,7 +63,7 @@ fun NotesGridPreview() {
     NotesGrid(
         notes = listOf(
             Note(
-                id = "1",
+                id = 1,
                 title = "Title",
                 imageUris = listOf("https://picsum.photos/200/300"),
                 content = "Content",
@@ -71,7 +71,7 @@ fun NotesGridPreview() {
                 date = System.currentTimeMillis()
             ),
             Note(
-                id = "2",
+                id = 2,
                 title = "Another Title",
                 imageUris = listOf(),
                 content = "Some more content",
@@ -79,7 +79,7 @@ fun NotesGridPreview() {
                 date = System.currentTimeMillis()
             ),
             Note(
-                id = "3",
+                id = 3,
                 title = "Lorem Ipsum",
                 imageUris = listOf(""),
                 content = "There are many variations of passages of Lorem Ipsum available, " +
@@ -89,7 +89,7 @@ fun NotesGridPreview() {
                 date = System.currentTimeMillis()
             ),
             Note(
-                id = "4",
+                id = 4,
                 title = "Lorem Ipsum",
                 imageUris = listOf(""),
                 content = "the majority have suffered alteration in some form, by injected humour," +
