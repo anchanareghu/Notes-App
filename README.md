@@ -1,5 +1,4 @@
 # Notes App
-![Purple App Phone Mockup Sales Marketing Presentation](https://github.com/anchanareghu/Notes-App/assets/143755659/bf50aae9-3815-4f8d-9e7e-f5ad7eda9797)
 
 An Android Notes application built with Kotlin, Jetpack Compose, and Room Database. This app allows users to create, edit, and delete notes efficiently.
 
@@ -9,9 +8,6 @@ An Android Notes application built with Kotlin, Jetpack Compose, and Room Databa
 - **Edit Notes**: Modify existing notes easily.
 - **Delete Notes**: Remove notes you no longer need.
 - **Persistent Storage**: All notes are saved locally using Room Database.
-
-## Screenshots
-
 
 ## Architecture
 
